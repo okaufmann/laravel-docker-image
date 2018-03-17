@@ -1,0 +1,6 @@
+web:
+    image: laravel:prod
+    ports:
+        - "8080:80"
+    volumes:
+        - ./code:/var/www/html/public
