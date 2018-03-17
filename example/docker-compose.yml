@@ -1,5 +1,5 @@
 web:
-    image: laravel:prod
+    image: registry.gitlab.com/ffhs/innt-gruppenarbeit-docker-image:prod
     ports:
         - "8080:80"
     volumes:
