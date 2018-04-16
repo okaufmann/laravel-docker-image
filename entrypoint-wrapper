@@ -1,13 +1,12 @@
 #!/bin/bash
 set -e
 
-{ # try
+if [ $# -gt 0 ]
+  then
+    echo running command before entrypoint
+    echo \>"$@"
 
-    eval "$@"
-} || { # catch
-    echo can\'t run eval:
-    echo "$@"
-}
-
+    exec "$@"
+fi
 
 exec docker-php-entrypoint apache2-foreground
