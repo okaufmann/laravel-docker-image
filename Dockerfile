@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 
-
 ADD 000-default.conf /etc/apache2/sites-available/
 
 RUN /usr/sbin/a2enmod rewrite
+
+ENTRYPOINT [ "entrypoint.sh" ]
