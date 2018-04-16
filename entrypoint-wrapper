@@ -3,7 +3,7 @@ set -e
 
 { # try
 
-    eval "$@" &&
+    eval "$@"
 } || { # catch
     echo can\'t run eval:
     echo "$@"
