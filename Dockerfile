@@ -22,4 +22,6 @@ ADD 000-default.conf /etc/apache2/sites-available/
 
 RUN /usr/sbin/a2enmod rewrite
 
-ENTRYPOINT [ "entrypoint.sh" ]
+COPY entrypoint-wrapper /usr/local/bin/
+
+ENTRYPOINT [ "entrypoint-wrapper" ]
