@@ -14,5 +14,7 @@ build:
 trigger_dev_build:
   image: alpine
   stage: build_dev
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends curl
   script:
     - "curl -X POST -F token=8402daa56fbd49b2e1cdb59f16f9a2 -F ref=dev https://gitlab.com/api/v4/projects/5785772/trigger/pipeline"
