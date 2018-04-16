@@ -6,7 +6,7 @@ if [ $# -gt 0 ]
     echo running command before entrypoint
     echo \>"$@"
 
-    exec "$@"
+    eval "$@"
 fi
 
 exec docker-php-entrypoint apache2-foreground
