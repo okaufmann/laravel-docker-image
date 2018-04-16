@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
-eval "$@"
+{ # try
+
+    eval "$@" &&
+} || { # catch
+    echo can\'t run eval:
+    echo "$@"
+}
+
 
 exec docker-php-entrypoint apache2-foreground
