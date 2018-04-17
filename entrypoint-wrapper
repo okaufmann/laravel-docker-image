@@ -1,9 +1,16 @@
 #!/bin/sh
 set -e
 
-if [ $# -gt 0 ]
-  then
-    "$@"
+if [ -z "$CI" ]; then
+    # if not in CI pipeline
+    if [ $# -gt 0 ]
+    then
+        "$@"
+    fi
+
+    exec docker-php-entrypoint apache2-foreground
+else
+    exec docker-php-entrypoint "$@"
 fi
 
-exec docker-php-entrypoint apache2-foreground
+
