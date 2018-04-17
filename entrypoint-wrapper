@@ -3,7 +3,7 @@ set -e
 
 if [ $# -gt 0 ]
   then
-    eval "$@"
+    "$@"
 fi
 
 exec docker-php-entrypoint apache2-foreground
