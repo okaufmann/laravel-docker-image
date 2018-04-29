@@ -1,5 +1,7 @@
 FROM php:fpm
 
+WORKDIR /code
+
 # add mcript and gd extension for php
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -17,3 +19,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
+
+COPY start.sh /usr/local/bin/start
+RUN chmod u+x /usr/local/bin/start
+
+CMD ["/usr/local/bin/start"]
