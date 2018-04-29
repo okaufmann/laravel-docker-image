@@ -7,6 +7,8 @@ env=${APP_ENV:-production}
 
 if [ "$env" != "local" ]; then
     echo "Caching configuration..."
+    export PHP_OPCACHE_ENABLE=1
+
     (cd /code && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache)
 fi
 
