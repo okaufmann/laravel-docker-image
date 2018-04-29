@@ -23,4 +23,6 @@ RUN pecl install mongodb \
 COPY start.sh /usr/local/bin/start
 RUN chmod u+x /usr/local/bin/start
 
+VOLUME /code
+
 CMD ["/usr/local/bin/start"]
