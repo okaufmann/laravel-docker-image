@@ -7,7 +7,7 @@ env=${APP_ENV:-production}
 
 if [ "$env" != "local" ]; then
     echo "Caching configuration..."
-    (cd /var/www/html && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache)
+    (cd /code && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache)
 fi
 
 if [ "$role" = "app" ]; then
@@ -21,14 +21,14 @@ elif [ "$role" = "cli" ]; then
 elif [ "$role" = "queue" ]; then
 
     echo "Running the queue..."
-    php /var/www/html/artisan horizon
+    php /code/artisan horizon
 
 elif [ "$role" = "scheduler" ]; then
 
     echo "Starting scheduler"
     while [ true ]
     do
-      php /var/www/html/artisan schedule:run --verbose --no-interaction &
+      php /code/artisan schedule:run --verbose --no-interaction &
       sleep 60
     done
 
