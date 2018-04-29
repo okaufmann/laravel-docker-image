@@ -1,4 +1,4 @@
-FROM php:apache
+FROM php:fpm
 
 # add mcript and gd extension for php
 RUN apt-get update && apt-get install -y \
@@ -17,10 +17,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
-
-ADD 000-default.conf /etc/apache2/sites-available/
-
-RUN /usr/sbin/a2enmod rewrite
 
 COPY entrypoint-wrapper /usr/local/bin/
 RUN chmod 775 /usr/local/bin/entrypoint-wrapper

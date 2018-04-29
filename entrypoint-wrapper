@@ -8,9 +8,7 @@ if [ -z "$CI" ]; then
         "$@"
     fi
 
-    exec docker-php-entrypoint apache2-foreground
+    exec docker-php-entrypoint php-fpm
 else
     exec docker-php-entrypoint "$@"
 fi
-
-
