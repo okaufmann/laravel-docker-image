@@ -12,7 +12,7 @@ fi
 
 if [ "$role" = "app" ]; then
 
-    exec apache2-foreground
+    exec php-fpm
 
 elif [ "$role" = "cli" ]; then
 
