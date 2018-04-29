@@ -8,7 +8,7 @@ env=${APP_ENV:-production}
 if [ "$env" != "local" ]; then
 
     # https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
-    source /usr/bin/dockerwait
+    source /usr/local/bin/dockerwait
 
     echo "Caching configuration..."
     export PHP_OPCACHE_ENABLE=1

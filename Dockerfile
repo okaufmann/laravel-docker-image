@@ -24,7 +24,7 @@ RUN pecl install mongodb \
 # COPY php.ini /usr/local/etc/php/
 COPY conf.d/*.ini /usr/local/etc/php/conf.d/
 
-COPY imagescripts/dockerwait.sh /usr/local/bin/dockerwait
+COPY dockerwait.sh /usr/local/bin/dockerwait
 RUN chmod u+x /usr/local/bin/dockerwait
 
 COPY start.sh /usr/local/bin/start
