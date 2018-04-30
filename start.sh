@@ -4,6 +4,7 @@ set -e
 
 role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
+migrate=${RUN_MIGRATIONS:-false}
 
 if [ "$env" != "local" ]; then
 
@@ -13,7 +14,12 @@ if [ "$env" != "local" ]; then
     echo "Caching configuration..."
     export PHP_OPCACHE_ENABLE=1
 
-    (cd /code && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache)
+    (cd /code && php artisan config:cache && php artisan route:cache && php artisan view:cache)
+fi
+
+if [ "$migrate" == "true" ]; then
+    echo "running migrations"
+    (cd /code && php artisan migrate --force)
 fi
 
 if [ "$role" = "app" ]; then
