@@ -2,6 +2,8 @@ FROM php:fpm
 
 WORKDIR /code
 
+EXPOSE 8000
+
 # add mcript and gd extension for php
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -14,6 +16,8 @@ RUN apt-get update && apt-get install -y \
         locales \
         libssl-dev \
         netcat \
+        nginx \
+        supervisor \
     && docker-php-ext-install -j$(nproc) mbstring tokenizer curl pcntl mysqli pdo pdo_mysql xml zip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
@@ -22,13 +26,30 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 
-# COPY php.ini /usr/local/etc/php/
-COPY conf.d/*.ini /usr/local/etc/php/conf.d/
+# config php
+COPY php/conf.d/*.ini /usr/local/etc/php/conf.d/
 
+# config logging
+# forward request and error logs to docker log collector
+RUN touch /var/log/nginx/access.log && \
+    touch /var/log/nginx/error.log && \
+    ln -sf /dev/stdout /var/log/nginx/access.log && \
+    ln -sf /dev/stderr /var/log/nginx/error.log
+
+# config nginx
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/site.conf /etc/nginx/conf.d/default.conf
+
+# config supervisor
+COPY supervisord/supervisord.conf /etc/supervisor/supervisord.conf
+
+# add scripts
 COPY dockerwait.sh /usr/local/bin/dockerwait
-RUN chmod u+x /usr/local/bin/dockerwait
-
 COPY start.sh /usr/local/bin/start
-RUN chmod u+x /usr/local/bin/start
+
+# fix permissions
+RUN chmod u+x /usr/local/bin/start && \
+    chmod u+x /usr/local/bin/dockerwait
+
 
 CMD ["/usr/local/bin/start"]

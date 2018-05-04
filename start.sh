@@ -24,7 +24,7 @@ fi
 
 if [ "$role" = "app" ]; then
 
-    exec php-fpm
+    exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 
 elif [ "$role" = "cli" ]; then
 
