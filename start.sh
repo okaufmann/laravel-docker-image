@@ -6,7 +6,7 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 migrate=${RUN_MIGRATIONS:-false}
 
-if [ "$env" != "local" ]; then
+if [ "$env" == "production" ]; then
 
     # https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
     source /usr/local/bin/dockerwait
