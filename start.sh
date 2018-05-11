@@ -17,7 +17,7 @@ if [ "$env" == "production" ]; then
     (cd /code && php artisan config:cache && php artisan route:cache && php artisan view:cache)
 fi
 
-if [ "$migrate" == "true" ]; then
+if [ "$migrate" == true ]; then
     echo "running migrations"
     (cd /code && php artisan migrate --force)
 fi
