@@ -2,9 +2,19 @@
 
 set -e
 
-role=${CONTAINER_ROLE:-app}
-env=${APP_ENV:-production}
+role=${CONTAINER_ROLE:-cli}
+env=${APP_ENV}
 migrate=${RUN_MIGRATIONS:-false}
+
+echo run using variables:
+echo role=$role
+echo env=$env
+echo migrate=$migrate
+
+if [ "$migrate" == true ]; then
+    echo "running migrations"
+    (cd /code && php artisan migrate --force)
+fi
 
 if [ "$env" == "production" ]; then
 
@@ -17,13 +27,9 @@ if [ "$env" == "production" ]; then
     (cd /code && php artisan config:cache && php artisan route:cache && php artisan view:cache)
 fi
 
-if [ "$migrate" == true ]; then
-    echo "running migrations"
-    (cd /code && php artisan migrate --force)
-fi
-
 if [ "$role" = "app" ]; then
 
+    # starts nginx and php-fpm
     exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 
 elif [ "$role" = "cli" ]; then
