@@ -5,15 +5,22 @@ set -e
 role=${CONTAINER_ROLE:-cli}
 env=${APP_ENV}
 migrate=${RUN_MIGRATIONS:-false}
+seed=${SEED_DB:-false}
 
 echo run using variables:
 echo role=$role
 echo env=$env
 echo migrate=$migrate
+echo seed=$seed
 
 if [ "$migrate" == true ]; then
-    echo "running migrations"
-    (cd /code && php artisan migrate --force)
+    if [ "$seed" == true ]; then
+        echo "running migrations and seed db"
+        (cd /code && php artisan migrate --force --seed)
+    else
+        echo "running migrations"
+        (cd /code && php artisan migrate --force)
+    fi
 fi
 
 if [ "$env" == "production" ]; then
