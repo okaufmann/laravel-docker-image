@@ -39,7 +39,6 @@ do
     file_env $new
 fi
 done
-exit
 
 role=${CONTAINER_ROLE:-cli}
 env=${APP_ENV}
