@@ -17,4 +17,4 @@ trigger_dev_build:
   before_script:
     - apk add --no-cache curl
   script:
-    - "curl -X POST -F token=8402daa56fbd49b2e1cdb59f16f9a2 -F ref=dev https://gitlab.com/api/v4/projects/5785772/trigger/pipeline"
+    - "curl -X POST -F token=2069a6e5ea93b995d11f69febbd261 -F ref=dev https://gitlab.com/api/v4/projects/6578509/trigger/pipeline"
