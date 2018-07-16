@@ -44,12 +44,14 @@ role=${CONTAINER_ROLE:-cli}
 env=${APP_ENV}
 migrate=${RUN_MIGRATIONS:-false}
 seed=${SEED_DB:-false}
+cache_routes=${CACHE_ROUTES:-true}
 
 echo run using variables:
 echo role=$role
 echo env=$env
 echo migrate=$migrate
 echo seed=$seed
+echo cache_routes=$cache_routes
 
 if [ "$migrate" == true ]; then
     if [ "$seed" == true ]; then
@@ -69,7 +71,11 @@ if [ "$env" == "production" ]; then
     echo "Caching configuration..."
     export PHP_OPCACHE_ENABLE=1
 
-    (cd /code && php artisan config:cache && php artisan route:cache && php artisan view:cache)
+    if [ "$cache_routes" == true ]; then
+        (cd /code && php artisan route:cache)
+    fi
+
+    (cd /code && php artisan config:cache && php artisan view:cache)
 fi
 
 if [ "$role" = "app" ]; then
