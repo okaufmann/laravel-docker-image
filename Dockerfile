@@ -1,9 +1,5 @@
 FROM php:fpm
 
-WORKDIR /code
-
-EXPOSE 8000
-
 # add mcript and gd extension for php
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -50,6 +46,12 @@ COPY start.sh /usr/local/bin/start
 # fix permissions
 RUN chmod u+x /usr/local/bin/start && \
     chmod u+x /usr/local/bin/dockerwait
+    
+# setup workdir and permissions
+WORKDIR /code
+RUN chown -R www-data:www-data /code
+
+EXPOSE 8000
 
 
 CMD ["/usr/local/bin/start"]
