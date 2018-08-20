@@ -3,10 +3,14 @@ stages:
  - build_dev
 
 build:
- image: docker:latest
  stage: build
+ image: docker:latest
  tags:
    - docker
+ variables:
+    DOCKER_DRIVER: overlay2
+ services:
+    - docker:dind
  before_script:
    - docker login -u "gitlab-ci-token" -p "$CI_BUILD_TOKEN" $CI_REGISTRY
  script:
