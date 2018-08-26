@@ -26,7 +26,7 @@ file_env() {
     unset "$fileVar"
 }
 
-# automatically try load all env vars ending in _FILE to be a secret
+# automatically try load all env vars ending in _FILE to be a secret
 for i in $(printenv)
 do
     if [[ $i == *"_FILE"* ]]; then
@@ -53,6 +53,9 @@ echo migrate=$migrate
 echo seed=$seed
 echo cache_routes=$cache_routes
 
+# https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
+source /usr/local/bin/dockerwait
+
 if [ "$migrate" == true ]; then
     if [ "$seed" == true ]; then
         echo "running migrations and seed db"
@@ -62,9 +65,6 @@ if [ "$migrate" == true ]; then
         (cd /code && php artisan migrate --force)
     fi
 fi
-
-# https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
-source /usr/local/bin/dockerwait
 
 if [ "$role" = "app" ]; then
     if [ "$env" == "production" ]; then
