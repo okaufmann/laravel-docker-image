@@ -63,24 +63,23 @@ if [ "$migrate" == true ]; then
     fi
 fi
 
-if [ "$env" == "production" ]; then
-
-    # https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
-    source /usr/local/bin/dockerwait
-
-    echo "Caching configuration..."
-    export PHP_OPCACHE_ENABLE=1
-
-    if [ "$cache_routes" == true ]; then
-        (cd /code && php artisan route:cache)
-    fi
-
-    (cd /code && php artisan config:cache && php artisan view:cache)
-fi
+# https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
+source /usr/local/bin/dockerwait
 
 if [ "$role" = "app" ]; then
+    if [ "$env" == "production" ]; then
+    
+        echo "Caching configuration..."
+        export PHP_OPCACHE_ENABLE=1
+    
+        if [ "$cache_routes" == true ]; then
+            (cd /code && php artisan route:cache)
+        fi
+    
+        (cd /code && php artisan config:cache && php artisan view:cache)
+    fi
 
-    # starts nginx and php-fpm
+    # starts nginx and php-fpm
     exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
 
 elif [ "$role" = "cli" ]; then
