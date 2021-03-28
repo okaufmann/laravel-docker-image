@@ -25,7 +25,7 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt install -y libmagickwand-dev --no-install-recommends \
+RUN apt install -y libmagickwand-dev imagemagick --no-install-recommends \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
     && rm -rf /var/lib/apt/lists/*
