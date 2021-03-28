@@ -1,5 +1,6 @@
 FROM php:8-fpm
 
+# inspired by https://github.com/nextcloud/docker/blob/f1ca6dbfab022e44b8aed9909939a4c43726d2f2/21.0/apache/Dockerfile
 # add mcript and gd extension for php
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
