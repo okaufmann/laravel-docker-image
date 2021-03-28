@@ -3,7 +3,7 @@
 set -e
 
 # ensure code has correct owner
-chown -R www-data:www-data /code
+chown -R root:root /code
 
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
