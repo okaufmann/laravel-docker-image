@@ -1,7 +1,7 @@
-FROM php:fpm
+FROM php:8-fpm
 
 # add mcript and gd extension for php
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd \
     && docker-php-ext-install opcache
 
-RUN apt-get install -y libmagickwand-dev --no-install-recommends \
+RUN apt install -y libmagickwand-dev --no-install-recommends \
     && yes '' | pecl install imagick || true \
     && docker-php-ext-enable imagick \
     && rm -rf /var/lib/apt/lists/*
