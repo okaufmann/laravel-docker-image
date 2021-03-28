@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng-dev \
         libxml2-dev \
+        libzip-dev \
         libcurl4-gnutls-dev \
         libmcrypt-dev \
         locales \
@@ -16,14 +17,14 @@ RUN apt-get update && apt-get install -y \
         supervisor \
         git-core \
         libmagickwand-dev \
-    && docker-php-ext-install tokenizer curl pcntl bcmath exif \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j "$(nproc)" tokenizer curl pcntl bcmath exif zip pdo_mysql \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install opcache \
-    # mongodb
-    && pecl install redis imagick \
-    # mongodb
-    && docker-php-ext-enable redis imagick \
+    # mongodb imagick
+    && pecl install redis  \
+    # mongodb imagick
+    && docker-php-ext-enable redis  \
     && rm -rf /var/lib/apt/lists/*
 
 # config php
