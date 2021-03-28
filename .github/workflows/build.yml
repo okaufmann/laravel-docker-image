@@ -12,7 +12,7 @@ jobs:
       - name: Prepare Tags
         id: prep
         run: |
-          DOCKER_IMAGE=okaufmann/laravel-docker-image
+          GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/laravel-docker-image
           VERSION=edge
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
@@ -21,10 +21,11 @@ jobs:
           elif [[ $GITHUB_REF == refs/pull/* ]]; then
             VERSION=pr-${{ github.event.number }}
           fi
-          TAGS="${DOCKER_IMAGE}:${VERSION}"
+          TAGS="${GHCR_IMAGE}:${VERSION}"
           if [ "${{ github.event_name }}" = "push" ]; then
             TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
           fi
+          echo ::set-output name=ghcr_image::${GHCR_IMAGE}
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
