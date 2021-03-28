@@ -1,7 +1,7 @@
 FROM php:8-fpm
 
 # add mcript and gd extension for php
-RUN apt update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
