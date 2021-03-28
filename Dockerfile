@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         libxml2-dev \
         libzip-dev \
+        libwebp-dev \
         libcurl4-gnutls-dev \
         libmcrypt-dev \
         locales \
