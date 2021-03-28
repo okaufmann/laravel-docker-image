@@ -56,7 +56,6 @@ RUN chmod u+x /usr/local/bin/start && \
 
 # setup workdir and permissions
 WORKDIR /code
-RUN chown -R www-data:www-data /code
 
 EXPOSE 8000
 
