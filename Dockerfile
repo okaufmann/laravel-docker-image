@@ -18,16 +18,17 @@ RUN apt update && apt install -y \
     && docker-php-ext-install tokenizer curl pcntl bcmath exif \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install opcache \
+    && docker-php-ext-install opcache imagick \
     # mongodb
     && pecl install redis \
     # mongodb
-    && docker-php-ext-enable redis
-
-RUN apt install -y libmagickwand-dev --no-install-recommends \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
+    && docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/*
+
+# RUN apt install -y libmagickwand-dev --no-install-recommends \
+#     && pecl install imagick \
+#     && docker-php-ext-enable imagick \
+#     && rm -rf /var/lib/apt/lists/*
 
 # config php
 COPY php/conf.d/*.ini /usr/local/etc/php/conf.d/
