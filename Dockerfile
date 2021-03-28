@@ -15,8 +15,7 @@ RUN apt update && apt install -y \
         nginx \
         supervisor \
         git-core \
-        libzip \
-    && docker-php-ext-install tokenizer curl pcntl mysqli pdo pdo_mysql xml zip bcmath exif redis \
+    && docker-php-ext-install tokenizer curl pcntl bcmath exif redis \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-install opcache
