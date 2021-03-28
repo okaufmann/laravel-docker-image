@@ -19,8 +19,10 @@ RUN apt update && apt install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install opcache \
-    && pecl install redis mongodb \
-    && docker-php-ext-enable redis mongodb
+    # mongodb
+    && pecl install redis \
+    # mongodb
+    && docker-php-ext-enable redis
 
 RUN apt install -y libmagickwand-dev --no-install-recommends \
     && pecl install imagick \
