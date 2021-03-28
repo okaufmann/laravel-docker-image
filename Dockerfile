@@ -18,7 +18,9 @@ RUN apt update && apt install -y \
     && docker-php-ext-install tokenizer curl pcntl bcmath exif \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
-    && docker-php-ext-install opcache
+    && docker-php-ext-install opcache \
+    && pecl install redis \
+    && docker-php-ext-enable redis
 
 RUN apt install -y libmagickwand-dev --no-install-recommends \
     && yes '' | pecl install imagick || true \
