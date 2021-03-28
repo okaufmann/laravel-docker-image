@@ -16,6 +16,7 @@ jobs:
         run: |
           GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/laravel-docker-image
           VERSION=edge
+          echo $GITHUB_REF
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
           elif [[ $GITHUB_REF == refs/heads/* ]]; then
