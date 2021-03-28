@@ -46,3 +46,6 @@ jobs:
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.prep.outputs.tags }}
+          platforms: linux/amd64
+          secrets: |
+            GIT_AUTH_TOKEN=${{ github.token }}
