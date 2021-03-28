@@ -1,7 +1,7 @@
 FROM php:8-fpm
 
 # add mcript and gd extension for php
-RUN apt update && apt install -y \
+RUN apt update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
@@ -15,19 +15,15 @@ RUN apt update && apt install -y \
         nginx \
         supervisor \
         git-core \
+        libmagickwand-dev \
     && docker-php-ext-install tokenizer curl pcntl bcmath exif \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install opcache \
     # mongodb
-    && pecl install redis \
+    && pecl install redis imagick \
     # mongodb
-    && docker-php-ext-enable redis \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apt install -y libmagickwand-dev imagemagick --no-install-recommends \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
+    && docker-php-ext-enable redis imagick \
     && rm -rf /var/lib/apt/lists/*
 
 # config php
