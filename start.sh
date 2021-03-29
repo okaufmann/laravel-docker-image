@@ -59,6 +59,8 @@ echo cache_routes=$cache_routes
 # https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
 source /usr/local/bin/dockerwait
 
+(cd /code && php artisan storage:link)
+
 if [ "$migrate" == true ]; then
     if [ "$seed" == true ]; then
         echo "running migrations and seed db"
