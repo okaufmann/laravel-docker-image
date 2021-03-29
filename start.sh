@@ -2,9 +2,6 @@
 
 set -e
 
-# ensure code has correct owner
-chown -R www-data:www-data /code
-
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
@@ -59,7 +56,10 @@ echo cache_routes=$cache_routes
 # https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
 source /usr/local/bin/dockerwait
 
-(cd /code && php artisan storage:link)
+(cd /code && su - www-data php artisan storage:link)
+
+# ensure code has correct owner
+chown -R www-data:www-data /code
 
 if [ "$migrate" == true ]; then
     if [ "$seed" == true ]; then
