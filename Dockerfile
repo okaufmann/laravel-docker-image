@@ -27,7 +27,9 @@ RUN apt-get update && apt-get install -y \
     && pecl install redis \
     # mongodb imagick
     && docker-php-ext-enable redis \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # config php
 COPY php/conf.d/*.ini /usr/local/etc/php/conf.d/
