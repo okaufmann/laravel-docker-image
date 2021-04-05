@@ -2,64 +2,26 @@
 
 set -e
 
-# usage: file_env VAR [DEFAULT]
-#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
-# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
-#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
-#
-# source: https://github.com/docker-library/mysql/blob/master/5.7/docker-entrypoint.sh#L21
-# file_env() {
-#     local var="$1"
-#     local fileVar="${var}_FILE"
-#     local def="${2:-}"
-#     if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
-#         echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
-#         exit 1
-#     fi
-#     local val="$def"
-#     if [ "${!var:-}" ]; then
-#         val="${!var}"
-#     elif [ "${!fileVar:-}" ]; then
-#         val="$(< "${!fileVar}")"
-#     fi
-#     export "$var"="$val"
-#     unset "$fileVar"
-# }
-
-# automatically try load all env vars ending in _FILE to be a secret
-# for i in $(printenv)
-# do
-#     if [[ $i == *"_FILE"* ]]; then
-#     varName="$(echo $i | cut -d'=' -f1)"
-
-#    # replace last _FILE with nothing
-#     empty=''
-#     new=$(echo $varName | sed  "s/_FILE$/$empty/g")
-
-#     file_env $new
-# fi
-# done
-
 role=${CONTAINER_ROLE:-cli}
 env=${APP_ENV}
 migrate=${RUN_MIGRATIONS:-false}
 seed=${SEED_DB:-false}
 cache_routes=${CACHE_ROUTES:-true}
+user=$(whoami)
 
-echo run using variables:
-echo role=$role
-echo env=$env
-echo migrate=$migrate
-echo seed=$seed
-echo cache_routes=$cache_routes
+echo "run using variables:"
+echo "role=$role"
+echo "env=$env"
+echo "migrate=$migrate"
+echo "seed=$seed"
+echo "cache_routes=$cache_routes"
+echo "current user=$user"
+php -v
 
-# https://github.com/blacklabelops/confluence/blob/master/docker-entrypoint.sh#L261
-source /usr/local/bin/dockerwait
+ls -la /code
 
-(cd /code && su - www-data php artisan storage:link)
-
-# ensure code has correct owner
-chown -R www-data:www-data /code
+echo "link storage"
+php /code/artisan storage:link
 
 if [ "$migrate" == true ]; then
     if [ "$seed" == true ]; then

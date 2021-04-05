@@ -47,17 +47,17 @@ COPY nginx/site.conf /etc/nginx/conf.d/default.conf
 COPY supervisord/supervisord.conf /etc/supervisor/supervisord.conf
 
 # add scripts
-COPY dockerwait.sh /usr/local/bin/dockerwait
 COPY start.sh /usr/local/bin/start
 
 # fix permissions
-RUN chmod u+x /usr/local/bin/start && \
-    chmod u+x /usr/local/bin/dockerwait
+RUN chmod u+x /usr/local/bin/start
 
 # setup workdir and permissions
 WORKDIR /code
 
-EXPOSE 8000
+# ensure code has correct owner
+RUN chown -R www-data:www-data /code
 
+EXPOSE 8000
 
 CMD ["/usr/local/bin/start"]
