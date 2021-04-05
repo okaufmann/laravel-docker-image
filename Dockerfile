@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y \
         supervisor \
         git-core \
         libmagickwand-dev \
+        # medialibrary dependencies
+        jpegoptim optipng pngquant gifsicle \
     && docker-php-ext-install -j "$(nproc)" tokenizer curl pcntl bcmath exif zip pdo_mysql \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) gd \
