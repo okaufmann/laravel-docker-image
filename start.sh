@@ -3,25 +3,34 @@
 set -e
 
 role=${CONTAINER_ROLE:-cli}
+container_debug=${CONTAINER_DEBUG:-false}
 env=${APP_ENV}
 migrate=${RUN_MIGRATIONS:-false}
 seed=${SEED_DB:-false}
 cache_routes=${CACHE_ROUTES:-true}
+link_storage=${LINK_STORAGE:-false}
 user=$(whoami)
 
 echo "run using variables:"
 echo "role=$role"
+echo "container_debug=$container_debug"
 echo "env=$env"
 echo "migrate=$migrate"
 echo "seed=$seed"
 echo "cache_routes=$cache_routes"
+echo "link_storage=$link_storage"
 echo "current user=$user"
-php -v
 
-ls -la /code
+if [ "$container_debug" == true ]; then
+    php -v
+    php -m
+    ls -la /code
+fi
 
-echo "link storage"
-php /code/artisan storage:link
+if [ "$link_storage" == true ]; then
+    echo "link storage"
+    php /code/artisan storage:link
+fi
 
 if [ "$migrate" == true ]; then
     if [ "$seed" == true ]; then
@@ -49,22 +58,22 @@ if [ "$role" = "app" ]; then
     # starts nginx and php-fpm
     exec /usr/bin/supervisord -n -c /etc/supervisor/app.conf
 
-elif [ "$role" = "cli" ]; then
+    elif [ "$role" = "cli" ]; then
 
     exec "$@"
 
-elif [ "$role" = "queue" ]; then
+    elif [ "$role" = "queue" ]; then
 
     echo "Running the queue..."
     exec /usr/bin/supervisord -n -c /etc/supervisor/queue.conf
 
-elif [ "$role" = "scheduler" ]; then
+    elif [ "$role" = "scheduler" ]; then
 
     echo "Starting scheduler"
     while [ true ]
     do
-      php /code/artisan schedule:run --verbose --no-interaction &
-      sleep 60
+        php /code/artisan schedule:run --verbose --no-interaction &
+        sleep 60
     done
 
 else
