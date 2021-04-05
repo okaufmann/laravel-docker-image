@@ -47,7 +47,7 @@ if [ "$role" = "app" ]; then
     fi
 
     # starts nginx and php-fpm
-    exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+    exec /usr/bin/supervisord -n -c /etc/supervisor/app.conf
 
 elif [ "$role" = "cli" ]; then
 
@@ -56,7 +56,7 @@ elif [ "$role" = "cli" ]; then
 elif [ "$role" = "queue" ]; then
 
     echo "Running the queue..."
-    php /code/artisan horizon
+    exec /usr/bin/supervisord -n -c /etc/supervisor/queue.conf
 
 elif [ "$role" = "scheduler" ]; then
 

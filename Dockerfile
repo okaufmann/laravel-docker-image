@@ -44,7 +44,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/site.conf /etc/nginx/conf.d/default.conf
 
 # config supervisor
-COPY supervisord/supervisord.conf /etc/supervisor/supervisord.conf
+COPY supervisord/ /etc/supervisor/
 
 # add scripts
 COPY start.sh /usr/local/bin/start
